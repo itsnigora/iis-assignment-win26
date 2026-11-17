@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot name="eva_domestic_assistant_kitchen" xmlns:xacro="http://www.ros.org/wiki/xacro">
+ <xacro:arg name="base_radius" default="0.20"/><xacro:arg name="base_height" default="0.65"/>
+ <xacro:arg name="link1_length" default="0.48"/><xacro:arg name="link2_length" default="0.38"/>
+ <xacro:arg name="gripper_span" default="0.14"/>
+ <xacro:property name="base_radius" value="$(arg base_radius)"/><xacro:property name="base_height" value="$(arg base_height)"/>
+ <xacro:property name="link1_length" value="$(arg link1_length)"/><xacro:property name="link2_length" value="$(arg link2_length)"/>
+ <xacro:property name="gripper_span" value="$(arg gripper_span)"/>
+ <xacro:include filename="base.xacro"/><xacro:include filename="arm.xacro"/><xacro:include filename="gripper.xacro"/>
+ <xacro:make_base base_radius="${base_radius}" base_height="${base_height}"/>
+ <xacro:make_arm base_height="${base_height}" link1_length="${link1_length}" link2_length="${link2_length}"/>
+ <xacro:make_gripper gripper_span="${gripper_span}"/>
+ <!-- A static, illustrative kitchen. All props are fixed links; there is NO grasp physics. -->
+ <link name="fridge_shelf"><visual><origin xyz="0.49 0 0.39"/><geometry><box size="0.30 0.30 0.025"/></geometry><material name="fridge_cyan"><color rgba="0.5 0.82 0.9 0.75"/></material></visual><collision><origin xyz="0.49 0 0.39"/><geometry><box size="0.30 0.30 0.025"/></geometry></collision></link>
+ <joint name="shelf_fixed" type="fixed"><parent link="base_link"/><child link="fridge_shelf"/></joint>
+ <link name="milk_carton"><visual><origin xyz="0.50 0 0.50"/><geometry><box size="0.10 0.10 0.20"/></geometry><material name="milk_white"><color rgba="0.95 0.95 0.99 1"/></material></visual><collision><origin xyz="0.50 0 0.50"/><geometry><box size="0.10 0.10 0.20"/></geometry></collision></link>
+ <joint name="carton_fixed" type="fixed"><parent link="base_link"/><child link="milk_carton"/></joint>
+ <link name="countertop"><visual><origin xyz="0.73 0 0.88"/><geometry><box size="0.55 0.42 0.04"/></geometry><material name="counter_brown"><color rgba="0.64 0.43 0.25 1"/></material></visual><collision><origin xyz="0.73 0 0.88"/><geometry><box size="0.55 0.42 0.04"/></geometry></collision></link>
+ <joint name="counter_fixed" type="fixed"><parent link="base_link"/><child link="countertop"/></joint>
+ <link name="eva_mug"><visual><origin xyz="0.72 0 0.96"/><geometry><cylinder radius="0.08" length="0.12"/></geometry><material name="mug_purple"><color rgba="0.55 0.25 0.8 1"/></material></visual><collision><origin xyz="0.72 0 0.96"/><geometry><cylinder radius="0.08" length="0.12"/></geometry></collision></link>
+ <joint name="mug_fixed" type="fixed"><parent link="base_link"/><child link="eva_mug"/></joint>
+</robot>

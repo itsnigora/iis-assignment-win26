@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="make_arm" params="base_height link1_length link2_length">
+    <!-- shoulder is 0.08 m above the pedestal, at the robot's x=0 axis -->
+    <link name="shoulder_link"><visual><geometry><sphere radius="0.055"/></geometry><material name="joint_dark"><color rgba="0.2 0.2 0.25 1"/></material></visual><collision><geometry><sphere radius="0.055"/></geometry></collision><inertial><mass value="0.5"/><inertia ixx="0.003" ixy="0" ixz="0" iyy="0.003" iyz="0" izz="0.003"/></inertial></link>
+    <joint name="shoulder_mount" type="fixed"><parent link="base_link"/><child link="shoulder_link"/><origin xyz="0 0 ${base_height + 0.08}"/></joint>
+    <link name="upper_arm_link"><visual><origin xyz="${link1_length/2} 0 0"/><geometry><box size="${link1_length} 0.065 0.065"/></geometry><material name="arm_orange"><color rgba="0.95 0.51 0.12 1"/></material></visual><collision><origin xyz="${link1_length/2} 0 0"/><geometry><box size="${link1_length} 0.065 0.065"/></geometry></collision><inertial><origin xyz="${link1_length/2} 0 0"/><mass value="1.2"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.025" iyz="0" izz="0.025"/></inertial></link>
+    <joint name="shoulder_pitch" type="revolute"><parent link="shoulder_link"/><child link="upper_arm_link"/><origin xyz="0 0 0"/><axis xyz="0 1 0"/><limit lower="-2.2" upper="2.2" effort="50" velocity="1.2"/></joint>
+    <link name="forearm_link"><visual><origin xyz="${link2_length/2} 0 0"/><geometry><box size="${link2_length} 0.055 0.055"/></geometry><material name="arm_silver"><color rgba="0.65 0.72 0.8 1"/></material></visual><collision><origin xyz="${link2_length/2} 0 0"/><geometry><box size="${link2_length} 0.055 0.055"/></geometry></collision><inertial><origin xyz="${link2_length/2} 0 0"/><mass value="0.8"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.012" iyz="0" izz="0.012"/></inertial></link>
+    <joint name="elbow_pitch" type="revolute"><parent link="upper_arm_link"/><child link="forearm_link"/><origin xyz="${link1_length} 0 0"/><axis xyz="0 1 0"/><limit lower="-2.6" upper="2.6" effort="35" velocity="1.2"/></joint>
+    <link name="wrist_link"><visual><geometry><sphere radius="0.035"/></geometry><material name="joint_dark"/></visual><collision><geometry><sphere radius="0.035"/></geometry></collision><inertial><mass value="0.25"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial></link>
+    <joint name="wrist_pitch" type="revolute"><parent link="forearm_link"/><child link="wrist_link"/><origin xyz="${link2_length} 0 0"/><axis xyz="0 1 0"/><limit lower="-2.7" upper="2.7" effort="15" velocity="1.2"/></joint>
+  </xacro:macro>
+</robot>
